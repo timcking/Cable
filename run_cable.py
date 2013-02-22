@@ -4,9 +4,9 @@ from PgData import PgData
 
 class MyApp(wx.App):
     
-    gIdx = 0
-    gList = []
-    gTotalRecs = 0
+    mIdx = 0
+    mList = []
+    mTotalRecs = 0
 
     def OnInit(self):
         self.db = PgData()
@@ -48,20 +48,20 @@ class MyApp(wx.App):
         
         embassy = self.cboSearch.GetValue()
         self.statusBar.SetStatusText("Searching ...")
-        self.gList = self.db.doSearch(embassy)
+        self.mList = self.db.doSearch(embassy)
         
-        self.gIdx = 0
-        self.gTotalRecs = len(self.gList)
+        self.mIdx = 0
+        self.mTotalRecs = len(self.mList)
         self.setStatus()
         
-        if self.gTotalRecs > 0:
+        if self.mTotalRecs > 0:
             self.btnPrev.Enable(False)
             self.btnNext.Enable(True)
             
             # Show first row
-            self.txtEmbassy.Value = self.gList[self.gIdx][0]
-            self.txtDate.Value = str(self.gList[self.gIdx][1])
-            self.txtContent.Value = self.gList[self.gIdx][2]
+            self.txtEmbassy.Value = self.mList[self.mIdx][0]
+            self.txtDate.Value = str(self.mList[self.mIdx][1])
+            self.txtContent.Value = self.mList[self.mIdx][2]
         else:
             self.statusBar.SetStatusText(embassy + " not found", 0)
         
@@ -73,11 +73,11 @@ class MyApp(wx.App):
         self.Exit()
         
     def OnNext(self, evt):
-        self.gIdx += 1
+        self.mIdx += 1
         self.changeRec()
     
     def OnPrev(self, evt):
-        self.gIdx -= 1
+        self.mIdx -= 1
         self.changeRec()
 
     def OnComboClick(self, evt):
@@ -96,15 +96,15 @@ class MyApp(wx.App):
         wx.Yield()        
         
     def setStatus(self):
-        self.statusBar.SetStatusText(str(self.gIdx + 1) + " / " + str(self.gTotalRecs), 0)
+        self.statusBar.SetStatusText(str(self.mIdx + 1) + " / " + str(self.mTotalRecs), 0)
     
     def changeRec(self):
-        print self.gIdx
-        if self.gIdx == 0:
+        print self.mIdx
+        if self.mIdx == 0:
             # Beginning of list
             self.btnPrev.Enable(False)
             self.btnNext.Enable(True)
-        elif self.gIdx == len(self.gList) - 1:
+        elif self.mIdx == len(self.mList) - 1:
             # End of list
             self.btnPrev.Enable(True)
             self.btnNext.Enable(False)
@@ -112,9 +112,9 @@ class MyApp(wx.App):
             self.btnPrev.Enable(True)
             self.btnNext.Enable(True)
             
-        self.txtEmbassy.Value = self.gList[self.gIdx][0]
-        self.txtDate.Value = str(self.gList[self.gIdx][1])
-        self.txtContent.Value = self.gList[self.gIdx][2]
+        self.txtEmbassy.Value = self.mList[self.mIdx][0]
+        self.txtDate.Value = str(self.mList[self.mIdx][1])
+        self.txtContent.Value = self.mList[self.mIdx][2]
         
         self.setStatus()
         
